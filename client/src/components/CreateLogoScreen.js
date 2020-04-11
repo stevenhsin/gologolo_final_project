@@ -56,6 +56,7 @@ class CreateLogoScreen extends Component {
                                         <label htmlFor="fontSize">Font Size:</label>
                                         <input type="number" className="form-control" name="fontSize" ref={node => {
                                             fontSize = node;
+                                        //**<input type="range" min="2" max="144" defaultValue="10" className="form-control" name="fontSize" ref={node => {fontSize = node; */
                                         }} placeholder="Font Size" />
                                     </div>
                                     <button type="submit" className="btn btn-success">Submit</button>
