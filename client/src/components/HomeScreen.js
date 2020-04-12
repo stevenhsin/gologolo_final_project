@@ -27,7 +27,7 @@ class HomeScreen extends Component {
                         <div className="container">
                             <div className="row">
                             <div className="col s4 ">
-                                <h3 class="display-4">Recent Work</h3>
+                                <h3 className="display-4">Recent Work</h3>
                                 <div id="home_recent_work_list">
                                     <div className="card">
                                         {data.logos.sort((a, b) => b.lastUpdate > a.lastUpdate).map((logo, index) => (
@@ -44,7 +44,7 @@ class HomeScreen extends Component {
                                     GoLogolo
                                 </div>
                                 <div>
-                                <a class="btn btn-primary" href="/create" role="button">Add Logo</a>
+                                <a className="btn btn-primary" href="/create" role="button">Add Logo</a>
                                 </div>
                             </div>
                         </div>
