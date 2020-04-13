@@ -195,18 +195,18 @@ class EditLogoScreen extends Component {
                                     </div>
                                     <div className="col s8" style={{overflow: 'auto'}}>
                                         <div style={{
-                                            color: data.logo.color,
-                                            fontSize: data.logo.fontSize + "pt",
+                                            color: this.state.color,
+                                            fontSize: this.state.fontSize + "pt",
 
-                                            backgroundColor: data.logo.backgroundColor,
+                                            backgroundColor: this.state.backgroundColor,
 
                                             borderStyle: 'solid',
-                                            borderColor: data.logo.borderColor,
-                                            borderRadius: data.logo.borderRadius + "pt",
+                                            borderColor: this.state.borderColor,
+                                            borderRadius: this.state.borderRadius + "pt",
                                             borderWidth: this.state.borderWidth + "pt",
 
-                                            padding: data.logo.padding + "pt",
-                                            margin: data.logo.margin + "pt",
+                                            padding: this.state.padding + "pt",
+                                            margin: this.state.margin + "pt",
                                             minWidth: 'min-content',
                                             textAlign: 'center',
                                             position: 'absolute',
