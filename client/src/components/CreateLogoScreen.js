@@ -33,7 +33,7 @@ const ADD_LOGO = gql`
 class CreateLogoScreen extends Component {
 
     render() {
-        let logo, text, color, fontSize, backgroundColor, borderColor, borderRadius, borderWidth, margin, padding;
+        let text, color, fontSize, backgroundColor, borderColor, borderRadius, borderWidth, margin, padding;
         return (
             <div className="container row">
             <div className="col">
@@ -65,7 +65,7 @@ class CreateLogoScreen extends Component {
                                 }}>
                                     <div className="form-group">
                                         <label htmlFor="text">Text:</label>
-                                        <input type="text" className="form-control" name="text" ref={node => {
+                                        <input type="text" className="form-control" name="text" defaultValue="New Logo Name" ref={node => {
                                             text = node;
                                         }} placeholder="Text" />
                                     </div>
@@ -128,18 +128,15 @@ class CreateLogoScreen extends Component {
                 )}
             </Mutation>
             </div>
-            {/* <div className="col s8" style={{overflow: 'auto'}}>
-                <div ref={node => {
-                    logo = node;
-                }}
-                style= {{
+            <div className="col s8" style={{overflow: 'auto'}}>
+                <div style= {{
                         color: "#FFFFFF",
                         fontSize: "44",
         
                         backgroundColor: "#FFFFFF",
         
                         borderStyle: 'solid',
-                        borderColor: "#00FF03",
+                        borderColor: "#000000",
                         borderRadius: "10",
                         borderWidth: "10",
         
@@ -149,11 +146,9 @@ class CreateLogoScreen extends Component {
                         minWidth: 'min-content',
                         textAlign: 'center',
                         position: 'absolute',
-                        whiteSpace: 'pre-wrap',
-                        position: 'absolute'
-                }}>
-                </div>
-            </div> */}
+                        whiteSpace: 'pre-wrap'
+                }}> {this.text}</div>
+            </div>
             </div>
         );
     }

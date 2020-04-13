@@ -41,7 +41,8 @@ class ViewLogoScreen extends Component {
                     if (loading) return 'Loading...';
                     if (error) return `Error! ${error.message}`;
                     return (
-                        <div className="container">
+                        <div className="container row">
+                        <div className="col">
                             <div className="panel panel-default">
                                 <div className="panel-heading">
                                     <h4><Link to="/">Home</Link></h4>
@@ -90,6 +91,28 @@ class ViewLogoScreen extends Component {
                                     </Mutation>
                                 </div>
                             </div>
+                        </div>
+                        <div className= "col s8" style={{overflow: 'auto'}}>
+                        <div style = {{
+                                color: data.logo.textColor,
+                                fontSize: data.logo.fontSize + "pt",
+
+                                backgroundColor: data.logo.backgroundColor,
+
+                                borderStyle: 'solid',
+                                borderColor: data.logo.borderColor,
+                                borderRadius: data.logo.borderRadius + "pt",
+                                borderWidth: data.logo.borderWidth + "pt",
+
+                                padding: data.logo.padding + "pt",
+                                margin: data.logo.margin + "pt",
+                                maxWidth: 'min-content',
+                                minWidth: 'min-content',
+                                textAlign: 'center',
+                                position: 'absolute',
+                                whiteSpace: 'pre-wrap'
+                        }}> {data.logo.text} </div>
+                        </div>
                         </div>
                     );
                 }}
