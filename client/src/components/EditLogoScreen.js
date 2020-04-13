@@ -68,7 +68,9 @@ class EditLogoScreen extends Component {
             borderWidth : "",
 
             padding : "",
-            margin : ""
+            margin : "",
+
+            flag : true
         };
 
         //this.handleChange = this.handleChange.bind(this);
@@ -86,6 +88,20 @@ class EditLogoScreen extends Component {
                 {({ loading, error, data }) => {
                     if (loading) return 'Loading...';
                     if (error) return `Error! ${error.message}`;
+
+                    if (this.state.flag) {
+                        this.setState({
+                            flag: false,
+                            text: data.logo.text,
+                            color: data.logo.color,
+                            fontSize: data.logo.fontSize,
+                            borderColor: data.logo.borderColor,
+                            borderRadius: data.logo.borderRadius,
+                            borderWidth: data.logo.borderWidth,
+                            padding: data.logo.padding,
+                            margin: data.logo.margin
+                        });
+                    }
                     
                     return (
                         <Mutation mutation={UPDATE_LOGO} key={data.logo._id} onCompleted={() => this.props.history.push(`/`)}>
@@ -195,7 +211,7 @@ class EditLogoScreen extends Component {
                                             textAlign: 'center',
                                             position: 'absolute',
                                             whiteSpace: 'pre-wrap'
-                                        }}> {data.logo.text} </div>
+                                        }}> {this.state.text} </div>
                                     </div>
                                 </div>
                             )}
