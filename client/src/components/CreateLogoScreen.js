@@ -34,15 +34,15 @@ class CreateLogoScreen extends Component {
     constructor() {
         super();
         this.state = {
-            text: "New Logo Text",
-            color: "#000000",
-            fontSize: 24,
-            backgroundColor: "#FFFFFF",
-            borderColor: "#00372F",
-            borderRadius: 20,
-            borderWidth: 20,
-            padding: 10,
-            margin: 35
+            text: "goLogolo Logo",
+            color: "#5870de",
+            fontSize: 40,
+            backgroundColor: "#e3bcef",
+            borderColor: "#8272b1",
+            borderRadius: 30,
+            borderWidth: 40,
+            padding: 25,
+            margin: 50
         };
         //this.handleChange = this.handleChange.bind(this);
     }
@@ -92,6 +92,13 @@ class CreateLogoScreen extends Component {
         this.setState({ margin: event.target.value});
     }
 
+    handleSubmit = (event) => {
+        if (this.state.text.trim() === "") {
+            event.preventDefault();
+            alert("Text cannot be all whitespace");
+        }
+    }
+
     render() {
         let text, color, fontSize, backgroundColor, borderColor, borderRadius, borderWidth, margin, padding;
         return (
@@ -102,7 +109,7 @@ class CreateLogoScreen extends Component {
                     <div className="container">
                         <div className="panel panel-default">
                             <div className="panel-heading">
-                                <h4><Link to="/">Home</Link></h4>
+                                <h4><a className="btn btn-primary" href="/" role="button">goLogolo Home</a></h4>
                                 <h3 className="panel-title">
                                     Create Logo
                             </h3>
@@ -178,7 +185,7 @@ class CreateLogoScreen extends Component {
                                             margin = node;
                                         }} placeholder="Margin" onChange={this.handleMarginChange}/>
                                     </div>
-                                    <button type="submit" className="btn btn-success">Submit</button>
+                                    <button type="submit" onClick={this.handleSubmit} className="btn btn-success">Submit</button>
                                 </form>
                                 {loading && <p>Loading...</p>}
                                 {error && <p>Error :( Please try again</p>}

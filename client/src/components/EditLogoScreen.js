@@ -121,6 +121,13 @@ class EditLogoScreen extends Component {
         this.setState({ margin: event.target.value});
     }
 
+    handleSubmit = (event) => {
+        if (this.state.text.trim() === "") {
+            event.preventDefault();
+            alert("Text cannot be all whitespace");
+        }
+    }
+
     render() {
         let text, color, fontSize, backgroundColor, borderColor, borderRadius, borderWidth, padding, margin;
         return (
@@ -235,7 +242,7 @@ class EditLogoScreen extends Component {
                                                     }} placeholder="Margin" defaultValue={data.logo.margin}
                                                     onChange={this.handleMarginChange}/>
                                                 </div>
-                                                <button type="submit" className="btn btn-success">Submit</button>
+                                                <button type="submit" onClick={this.handleSubmit} className="btn btn-success">Submit</button>
                                             </form>
                                             {loading && <p>Loading...</p>}
                                             {error && <p>Error :( Please try again</p>}
