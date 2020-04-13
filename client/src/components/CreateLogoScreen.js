@@ -125,7 +125,7 @@ class CreateLogoScreen extends Component {
                                 }}>
                                     <div className="form-group">
                                         <label htmlFor="text">Text:</label>
-                                        <input type="text" className="form-control" name="text" defaultValue={this.state.text} ref={node => {
+                                        <input type="text" required className="form-control" name="text" defaultValue={this.state.text} ref={node => {
                                             text = node;
                                         }} placeholder="Text" onChange={this.handleTextChange}/>
                                     </div>
