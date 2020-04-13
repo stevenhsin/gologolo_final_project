@@ -51,8 +51,31 @@ const UPDATE_LOGO = gql`
 
 class EditLogoScreen extends Component {
 
-    handleBorderWidth = (event) => {
-        console.log("handleBorderWidthhange to " + event.target.value);
+    constructor() {
+        super();
+
+        // WE'LL MANAGE THE UI CONTROL
+        // VALUES HERE
+        this.state = {
+            text : "",
+            textColor : "",
+            fontSize : "",
+            
+            backgroundColor : "",
+
+            borderColor : "",
+            borderRadius : "",
+            borderWidth : "",
+
+            padding : "",
+            margin : ""
+        };
+
+        //this.handleChange = this.handleChange.bind(this);
+    }
+
+    handleBorderWidthChange = (event) => {
+        console.log("handleBorderWidthChange to " + event.target.value);
         this.setState({ borderWidth: event.target.value });
     }
 
@@ -63,7 +86,7 @@ class EditLogoScreen extends Component {
                 {({ loading, error, data }) => {
                     if (loading) return 'Loading...';
                     if (error) return `Error! ${error.message}`;
-
+                    
                     return (
                         <Mutation mutation={UPDATE_LOGO} key={data.logo._id} onCompleted={() => this.props.history.push(`/`)}>
                             {(updateLogo, { loading, error }) => (
@@ -106,7 +129,7 @@ class EditLogoScreen extends Component {
                                                 </div>
                                                 <div className="form-group">
                                                     <label htmlFor="fontSize">Font Size:</label>
-                                                    <input type="text" min="2" max="144" className="form-control" name="fontSize" ref={node => {
+                                                    <input type="number" min="2" max="144" className="form-control" name="fontSize" ref={node => {
                                                         fontSize = node;
                                                     }} placeholder="Font Size" defaultValue={data.logo.fontSize} />
                                                 </div>
@@ -133,7 +156,7 @@ class EditLogoScreen extends Component {
                                                     <input type="number" min="2" max="144" className="form-control" name="borderWidth" ref={node => {
                                                         borderWidth = node;
                                                     }} placeholder="Border Width" defaultValue={data.logo.borderWidth}
-                                                    onChange={this.handleBorderWidth}/>
+                                                    onChange={this.handleBorderWidthChange}/>
                                                 </div>
                                                 <div className="form-group">
                                                     <label htmlFor="padding">Padding:</label>
@@ -164,11 +187,10 @@ class EditLogoScreen extends Component {
                                             borderStyle: 'solid',
                                             borderColor: data.logo.borderColor,
                                             borderRadius: data.logo.borderRadius + "pt",
-                                            borderWidth: data.logo.borderWidth + "pt",
+                                            borderWidth: this.state.borderWidth + "pt",
 
                                             padding: data.logo.padding + "pt",
                                             margin: data.logo.margin + "pt",
-                                            maxWidth: 'min-content',
                                             minWidth: 'min-content',
                                             textAlign: 'center',
                                             position: 'absolute',

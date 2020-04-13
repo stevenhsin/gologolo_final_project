@@ -106,7 +106,6 @@ class ViewLogoScreen extends Component {
 
                                 padding: data.logo.padding + "pt",
                                 margin: data.logo.margin + "pt",
-                                maxWidth: 'min-content',
                                 minWidth: 'min-content',
                                 textAlign: 'center',
                                 position: 'absolute',

@@ -202,7 +202,6 @@ class CreateLogoScreen extends Component {
         
                         padding: this.state.padding + "pt",
                         margin: this.state.margin + "pt",
-                        maxWidth: 'min-content',
                         minWidth: 'min-content',
                         textAlign: 'center',
                         position: 'absolute',
