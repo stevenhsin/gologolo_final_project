@@ -51,8 +51,8 @@ class CreateLogoScreen extends Component {
                                 <form onSubmit={e => {
                                     e.preventDefault();
                                     addLogo({ variables: { text: text.value, color: color.value, fontSize: parseInt(fontSize.value), backgroundColor: backgroundColor.value,
-                                    borderColor: borderColor.value, borderRadius: parseInt(borderRadius.value), borderWidth: parseInt(borderWidth.value), 
-                                    margin: parseInt(margin.value), padding: parseInt(padding.value) } });
+                                        borderColor: borderColor.value, borderRadius: parseInt(borderRadius.value), borderWidth: parseInt(borderWidth.value), 
+                                        margin: parseInt(margin.value), padding: parseInt(padding.value) } });
                                     text.value = "";
                                     color.value = "";
                                     fontSize.value = "";

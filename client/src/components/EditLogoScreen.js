@@ -57,7 +57,7 @@ class EditLogoScreen extends Component {
     }
 
     render() {
-        let logo, text, color, fontSize, backgroundColor, borderColor, borderRadius, borderWidth, padding, margin;
+        let text, color, fontSize, backgroundColor, borderColor, borderRadius, borderWidth, padding, margin;
         return (
             <Query query={GET_LOGO} variables={{ logoId: this.props.match.params.id }}>
                 {({ loading, error, data }) => {
@@ -79,18 +79,18 @@ class EditLogoScreen extends Component {
                                         <div className="panel-body">                                            
                                             <form onSubmit={e => {
                                                 e.preventDefault();
-                                                updateLogo({ variables: { text: text.value, color: color.value, fontSize: parseInt(fontSize.value), backgroundColor: backgroundColor.value,
+                                                updateLogo({ variables: { id: data.logo._id, text: text.value, color: color.value, fontSize: parseInt(fontSize.value), backgroundColor: backgroundColor.value,
                                                     borderColor: borderColor.value, borderRadius: parseInt(borderRadius.value), borderWidth: parseInt(borderWidth.value), 
                                                     margin: parseInt(margin.value), padding: parseInt(padding.value) } });
-                                                    text.value = "";
-                                                    color.value = "";
-                                                    fontSize.value = "";
-                                                    backgroundColor.value= "";
-                                                    borderColor.value= "";
-                                                    borderRadius.value= "";
-                                                    borderWidth.value= "";
-                                                    margin.value= "";
-                                                    padding.value= "";
+                                                text.value = "";
+                                                color.value = "";
+                                                fontSize.value = "";
+                                                backgroundColor.value= "";
+                                                borderColor.value= "";
+                                                borderRadius.value= "";
+                                                borderWidth.value= "";
+                                                margin.value= "";
+                                                padding.value= "";
                                             }}>
                                                 <div className="form-group">
                                                     <label htmlFor="text">Text:</label>
@@ -164,7 +164,7 @@ class EditLogoScreen extends Component {
                                             borderStyle: 'solid',
                                             borderColor: data.logo.borderColor,
                                             borderRadius: data.logo.borderRadius + "pt",
-                                            borderWidth: data.logo.borderRadius + "pt",
+                                            borderWidth: data.logo.borderWidth + "pt",
 
                                             padding: data.logo.padding + "pt",
                                             margin: data.logo.margin + "pt",

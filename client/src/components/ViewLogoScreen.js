@@ -94,7 +94,7 @@ class ViewLogoScreen extends Component {
                         </div>
                         <div className= "col s8" style={{overflow: 'auto'}}>
                         <div style = {{
-                                color: data.logo.textColor,
+                                color: data.logo.color,
                                 fontSize: data.logo.fontSize + "pt",
 
                                 backgroundColor: data.logo.backgroundColor,
