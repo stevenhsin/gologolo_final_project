@@ -31,6 +31,21 @@ const ADD_LOGO = gql`
 `;
 
 class CreateLogoScreen extends Component {
+    constructor() {
+        super();
+        this.state = {
+            text: "New Logo Text",
+            color: "#000000",
+            fontSize: 24,
+            backgroundColor: "#FFFFFF",
+            borderColor: "#00372F",
+            borderRadius: 20,
+            borderWidth: 20,
+            padding: 10,
+            margin: 35
+        };
+        //this.handleChange = this.handleChange.bind(this);
+    }
 
     render() {
         let text, color, fontSize, backgroundColor, borderColor, borderRadius, borderWidth, margin, padding;
@@ -65,56 +80,56 @@ class CreateLogoScreen extends Component {
                                 }}>
                                     <div className="form-group">
                                         <label htmlFor="text">Text:</label>
-                                        <input type="text" className="form-control" name="text" defaultValue="New Logo Name" ref={node => {
+                                        <input type="text" className="form-control" name="text" defaultValue={this.state.text} ref={node => {
                                             text = node;
                                         }} placeholder="Text" />
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="color">Color:</label>
-                                        <input type="color" className="form-control" name="color" ref={node => {
+                                        <input type="color" className="form-control" name="color" defaultValue={this.state.color} ref={node => {
                                             color = node;
                                         }} placeholder="Color" />
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="fontSize">Font Size:</label>
-                                        <input type="number" min="2" max="144" className="form-control" name="fontSize" ref={node => {
+                                        <input type="number" min="2" max="144" className="form-control" name="fontSize" defaultValue={this.state.fontSize} ref={node => {
                                             fontSize = node;
                                         //**<input type="range" min="2" max="144" defaultValue="10" className="form-control" name="fontSize" ref={node => {fontSize = node; */
                                         }} placeholder="Font Size" />
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="backgroundColor">Background Color:</label>
-                                        <input type="color" className="form-control" name="color" ref={node => {
+                                        <input type="color" className="form-control" name="color" defaultValue={this.state.backgroundColor} ref={node => {
                                             backgroundColor = node;
                                         }} placeholder="Background Color" />
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="borderColor">Border Color:</label>
-                                        <input type="color" className="form-control" name="color" ref={node => {
+                                        <input type="color" className="form-control" name="color" defaultValue={this.state.borderColor} ref={node => {
                                             borderColor = node;
                                         }} placeholder="Border Color" />
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="borderRadius">Border Radius:</label>
-                                        <input type="number" min="2" max="144" className="form-control" name="borderRadius" ref={node => {
+                                        <input type="number" min="2" max="144" className="form-control" name="borderRadius" defaultValue={this.state.borderRadius} ref={node => {
                                             borderRadius = node;
                                         }} placeholder="Border Radius" />
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="borderWidth">Border Width:</label>
-                                        <input type="number" min="2" max="144" className="form-control" name="borderWidth" ref={node => {
+                                        <input type="number" min="2" max="144" className="form-control" name="borderWidth" defaultValue={this.state.borderWidth} ref={node => {
                                             borderWidth = node;
                                         }} placeholder="Border Width" />
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="padding">Padding:</label>
-                                        <input type="number" min="2" max="144" className="form-control" name="padding" ref={node => {
+                                        <input type="number" min="2" max="144" className="form-control" name="padding" defaultValue={this.state.padding} ref={node => {
                                             padding = node;
                                         }} placeholder="Padding" />
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="margin">Margin:</label>
-                                        <input type="number" min="2" max="144" className="form-control" name="margin" ref={node => {
+                                        <input type="number" min="2" max="144" className="form-control" name="margin" defaultValue={this.state.margin} ref={node => {
                                             margin = node;
                                         }} placeholder="Margin" />
                                     </div>
@@ -130,24 +145,24 @@ class CreateLogoScreen extends Component {
             </div>
             <div className="col s8" style={{overflow: 'auto'}}>
                 <div style= {{
-                        color: "#FFFFFF",
-                        fontSize: "44",
+                        color: this.state.color,
+                        fontSize: this.state.fontSize + "pt",
         
-                        backgroundColor: "#FFFFFF",
+                        backgroundColor: this.state.backgroundColor,
         
                         borderStyle: 'solid',
-                        borderColor: "#000000",
-                        borderRadius: "10",
-                        borderWidth: "10",
+                        borderColor: this.state.borderColor,
+                        borderRadius: this.state.borderRadius + "pt",
+                        borderWidth: this.state.borderWidth + "pt",
         
-                        padding: "10",
-                        margin: "10",
+                        padding: this.state.padding + "pt",
+                        margin: this.state.margin + "pt",
                         maxWidth: 'min-content',
                         minWidth: 'min-content',
                         textAlign: 'center',
                         position: 'absolute',
                         whiteSpace: 'pre-wrap'
-                }}> {this.text}</div>
+                }}> {this.state.text} </div>
             </div>
             </div>
         );
