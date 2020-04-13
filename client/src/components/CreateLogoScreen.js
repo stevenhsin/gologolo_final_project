@@ -47,6 +47,51 @@ class CreateLogoScreen extends Component {
         //this.handleChange = this.handleChange.bind(this);
     }
 
+    handleTextChange = (event) => {
+        console.log("handleText " + event.target.value);
+        this.setState({ text: event.target.value });
+    }
+
+    handleColorChange = (event) => {
+        console.log("handleColorChange " + event.target.value);
+        this.setState({ color: event.target.value});
+    }
+
+    handleFontSizeChange = (event) => {
+        console.log("handleFontSizeChange " + event.target.value);
+        this.setState({ fontSize: event.target.value});
+    }
+
+    handleBackgroundColorChange = (event) => {
+        console.log("handleBackgroundColorChange " + event.target.value);
+        this.setState({ backgroundColor: event.target.value});
+    }
+
+    handleBorderColorChange = (event) => {
+        console.log("handleBorderColorChange " + event.target.value);
+        this.setState({ borderColor: event.target.value});
+    }
+
+    handleBorderRadiusChange = (event) => {
+        console.log("handleBorderRadius " + event.target.value);
+        this.setState({ borderRadius: event.target.value});
+    }
+
+    handleBorderWidthChange = (event) => {
+        console.log("handleBorderWidthChange " + event.target.value);
+        this.setState({ borderWidth: event.target.value});
+    }
+
+    handlePaddingChange = (event) => {
+        console.log("handlePaddingChange " + event.target.value);
+        this.setState({ padding: event.target.value});
+    }
+
+    handleMarginChange = (event) => {
+        console.log("handleMarginChange " + event.target.value);
+        this.setState({ margin: event.target.value});
+    }
+
     render() {
         let text, color, fontSize, backgroundColor, borderColor, borderRadius, borderWidth, margin, padding;
         return (
@@ -82,56 +127,56 @@ class CreateLogoScreen extends Component {
                                         <label htmlFor="text">Text:</label>
                                         <input type="text" className="form-control" name="text" defaultValue={this.state.text} ref={node => {
                                             text = node;
-                                        }} placeholder="Text" />
+                                        }} placeholder="Text" onChange={this.handleTextChange}/>
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="color">Color:</label>
                                         <input type="color" className="form-control" name="color" defaultValue={this.state.color} ref={node => {
                                             color = node;
-                                        }} placeholder="Color" />
+                                        }} placeholder="Color" onChange={this.handleColorChange}/>
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="fontSize">Font Size:</label>
                                         <input type="number" min="2" max="144" className="form-control" name="fontSize" defaultValue={this.state.fontSize} ref={node => {
                                             fontSize = node;
                                         //**<input type="range" min="2" max="144" defaultValue="10" className="form-control" name="fontSize" ref={node => {fontSize = node; */
-                                        }} placeholder="Font Size" />
+                                        }} placeholder="Font Size" onChange={this.handleFontSizeChange}/>
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="backgroundColor">Background Color:</label>
                                         <input type="color" className="form-control" name="color" defaultValue={this.state.backgroundColor} ref={node => {
                                             backgroundColor = node;
-                                        }} placeholder="Background Color" />
+                                        }} placeholder="Background Color" onChange={this.handleBackgroundColorChange}/>
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="borderColor">Border Color:</label>
                                         <input type="color" className="form-control" name="color" defaultValue={this.state.borderColor} ref={node => {
                                             borderColor = node;
-                                        }} placeholder="Border Color" />
+                                        }} placeholder="Border Color" onChange={this.handleBorderColorChange}/>
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="borderRadius">Border Radius:</label>
                                         <input type="number" min="2" max="144" className="form-control" name="borderRadius" defaultValue={this.state.borderRadius} ref={node => {
                                             borderRadius = node;
-                                        }} placeholder="Border Radius" />
+                                        }} placeholder="Border Radius" onChange={this.handleBorderRadiusChange}/>
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="borderWidth">Border Width:</label>
                                         <input type="number" min="2" max="144" className="form-control" name="borderWidth" defaultValue={this.state.borderWidth} ref={node => {
                                             borderWidth = node;
-                                        }} placeholder="Border Width" />
+                                        }} placeholder="Border Width" onChange={this.handleBorderWidthChange}/>
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="padding">Padding:</label>
                                         <input type="number" min="2" max="144" className="form-control" name="padding" defaultValue={this.state.padding} ref={node => {
                                             padding = node;
-                                        }} placeholder="Padding" />
+                                        }} placeholder="Padding" onChange={this.handlePaddingChange}/>
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="margin">Margin:</label>
                                         <input type="number" min="2" max="144" className="form-control" name="margin" defaultValue={this.state.margin} ref={node => {
                                             margin = node;
-                                        }} placeholder="Margin" />
+                                        }} placeholder="Margin" onChange={this.handleMarginChange}/>
                                     </div>
                                     <button type="submit" className="btn btn-success">Submit</button>
                                 </form>
