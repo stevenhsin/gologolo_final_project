@@ -45,7 +45,7 @@ class ViewLogoScreen extends Component {
                         <div className="col">
                             <div className="panel panel-default">
                                 <div className="panel-heading">
-                                    <h4><Link to="/">Home</Link></h4>
+                                    <h4><a className="btn btn-primary" href="/" role="button">goLogolo Home</a></h4>
                                     <h3 className="panel-title">
                                         View Logo
                                     </h3>
@@ -106,6 +106,7 @@ class ViewLogoScreen extends Component {
 
                                 padding: data.logo.padding + "pt",
                                 margin: data.logo.margin + "pt",
+                                maxWidth: 'min-content',
                                 minWidth: 'min-content',
                                 textAlign: 'center',
                                 position: 'absolute',

@@ -76,9 +76,49 @@ class EditLogoScreen extends Component {
         //this.handleChange = this.handleChange.bind(this);
     }
 
+    handleTextChange = (event) => {
+        console.log("handleTextChange to " + event.target.value);
+        this.setState({text: event.target.value});
+    }
+
+    handleColorChange = (event) => {
+        console.log("handleColorChange " + event.target.value);
+        this.setState({ color: event.target.value});
+    }
+
+    handleFontSizeChange = (event) => {
+        console.log("handleFontSizeChange " + event.target.value);
+        this.setState({ fontSize: event.target.value});
+    }
+
+    handleBackgroundColorChange = (event) => {
+        console.log("handleBackgroundColorChange " + event.target.value);
+        this.setState({ backgroundColor: event.target.value});
+    }
+
+    handleBorderColorChange = (event) => {
+        console.log("handleBorderColorChange " + event.target.value);
+        this.setState({ borderColor: event.target.value});
+    }
+
+    handleBorderRadiusChange = (event) => {
+        console.log("handleBorderRadius " + event.target.value);
+        this.setState({ borderRadius: event.target.value});
+    }
+
     handleBorderWidthChange = (event) => {
         console.log("handleBorderWidthChange to " + event.target.value);
         this.setState({ borderWidth: event.target.value });
+    }
+
+    handlePaddingChange = (event) => {
+        console.log("handlePaddingChange " + event.target.value);
+        this.setState({ padding: event.target.value});
+    }
+
+    handleMarginChange = (event) => {
+        console.log("handleMarginChange " + event.target.value);
+        this.setState({ margin: event.target.value});
     }
 
     render() {
@@ -95,6 +135,7 @@ class EditLogoScreen extends Component {
                             text: data.logo.text,
                             color: data.logo.color,
                             fontSize: data.logo.fontSize,
+                            backgroundColor: data.logo.backgroundColor,
                             borderColor: data.logo.borderColor,
                             borderRadius: data.logo.borderRadius,
                             borderWidth: data.logo.borderWidth,
@@ -135,37 +176,43 @@ class EditLogoScreen extends Component {
                                                     <label htmlFor="text">Text:</label>
                                                     <input type="text" className="form-control" name="text" ref={node => {
                                                         text = node;
-                                                    }} placeholder="Text" defaultValue={data.logo.text} />
+                                                    }} placeholder="Text" defaultValue={data.logo.text} 
+                                                    onChange={this.handleTextChange}/>
                                                 </div>
                                                 <div className="form-group">
                                                     <label htmlFor="color">Color:</label>
                                                     <input type="color" className="form-control" name="color" ref={node => {
                                                         color = node;
-                                                    }} placeholder="Color" defaultValue={data.logo.color} />
+                                                    }} placeholder="Color" defaultValue={data.logo.color} 
+                                                    onChange={this.handleColorChange}/>
                                                 </div>
                                                 <div className="form-group">
                                                     <label htmlFor="fontSize">Font Size:</label>
                                                     <input type="number" min="2" max="144" className="form-control" name="fontSize" ref={node => {
                                                         fontSize = node;
-                                                    }} placeholder="Font Size" defaultValue={data.logo.fontSize} />
+                                                    }} placeholder="Font Size" defaultValue={data.logo.fontSize}
+                                                    onChange={this.handleFontSizeChange}/>
                                                 </div>
                                                 <div className="form-group">
                                                     <label htmlFor="backgroundColor">Background Color:</label>
                                                     <input type="color" className="form-control" name="color" ref={node => {
                                                         backgroundColor = node;
-                                                    }} placeholder="Background Color" defaultValue={data.logo.backgroundColor}/>
+                                                    }} placeholder="Background Color" defaultValue={data.logo.backgroundColor}
+                                                    onChange={this.handleBackgroundColorChange}/>
                                                 </div>
                                                     <div className="form-group">
                                                     <label htmlFor="borderColor">Border Color:</label>
                                                     <input type="color" className="form-control" name="color" ref={node => {
                                                         borderColor = node;
-                                                    }} placeholder="Border Color" defaultValue={data.logo.borderColor}/>
+                                                    }} placeholder="Border Color" defaultValue={data.logo.borderColor}
+                                                    onChange={this.handleBorderColorChange}/>
                                                 </div>
                                                     <div className="form-group">
                                                         <label htmlFor="borderRadius">Border Radius:</label>
                                                     <input type="number" min="2" max="144" className="form-control" name="borderRadius" ref={node => {
                                                         borderRadius = node;
-                                                    }} placeholder="Border Radius" defaultValue={data.logo.borderRadius}/>
+                                                    }} placeholder="Border Radius" defaultValue={data.logo.borderRadius}
+                                                    onChange={this.handleBorderRadiusChange}/>
                                                 </div>
                                                 <div className="form-group">
                                                     <label htmlFor="borderWidth">Border Width:</label>
@@ -178,13 +225,15 @@ class EditLogoScreen extends Component {
                                                     <label htmlFor="padding">Padding:</label>
                                                     <input type="number" min="2" max="144" className="form-control" name="padding" ref={node => {
                                                         padding = node;
-                                                    }} placeholder="Padding" defaultValue={data.logo.padding}/>
+                                                    }} placeholder="Padding" defaultValue={data.logo.padding}
+                                                    onChange={this.handlePaddingChange}/>
                                                 </div>
                                                 <div className="form-group">
                                                     <label htmlFor="margin">Margin:</label>
                                                     <input type="number" min="2" max="144" className="form-control" name="margin" ref={node => {
                                                         margin = node;
-                                                    }} placeholder="Margin" defaultValue={data.logo.margin}/>
+                                                    }} placeholder="Margin" defaultValue={data.logo.margin}
+                                                    onChange={this.handleMarginChange}/>
                                                 </div>
                                                 <button type="submit" className="btn btn-success">Submit</button>
                                             </form>
@@ -207,6 +256,7 @@ class EditLogoScreen extends Component {
 
                                             padding: this.state.padding + "pt",
                                             margin: this.state.margin + "pt",
+                                            maxWidth: 'min-content',
                                             minWidth: 'min-content',
                                             textAlign: 'center',
                                             position: 'absolute',

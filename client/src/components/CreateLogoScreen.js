@@ -48,7 +48,7 @@ class CreateLogoScreen extends Component {
     }
 
     handleTextChange = (event) => {
-        console.log("handleText " + event.target.value);
+        console.log("handleTextChange " + event.target.value);
         this.setState({ text: event.target.value });
     }
 
@@ -202,6 +202,7 @@ class CreateLogoScreen extends Component {
         
                         padding: this.state.padding + "pt",
                         margin: this.state.margin + "pt",
+                        maxWidth: 'min-content',
                         minWidth: 'min-content',
                         textAlign: 'center',
                         position: 'absolute',
