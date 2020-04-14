@@ -1,6 +1,6 @@
 Example GraphiQL Queries
 
-Adding New Logo:
+Adding New Logo: <br />
 mutation{
   addLogo(
     text: "CSE316 Logo",
@@ -17,7 +17,7 @@ mutation{
   }
 }
 
-Getting All Logos:
+Getting All Logos: <br />
 {
   logos{
     _id
@@ -34,7 +34,7 @@ Getting All Logos:
   }
 }
 
-Getting a Single Logo:
+Getting a Single Logo:<br />
 {
   logo(id: "5e8e2f65d64f5414b48e48a5"){
     _id
@@ -49,9 +49,10 @@ Getting a Single Logo:
     margin
   }
 }
+
 (It should be noted that the id will vary depending on the logo you want to get.)
 
-Updating a Logo:
+Updating a Logo: <br />
 mutation{
   updateLogo(
     id: "5e8e2f65d64f5414b48e48a5"
@@ -69,10 +70,11 @@ mutation{
   }
 }
 
-Removing a Logo:
+Removing a Logo: <br />
 mutation{
   removeLogo (id: "5e8e2f65d64f5414b48e48a5"){
     _id
   }
 }
+
 (It should be noted that the id will vary depending on the logo you want to remove.)
