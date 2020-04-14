@@ -50,6 +50,11 @@ class CreateLogoScreen extends Component {
     handleTextChange = (event) => {
         console.log("handleTextChange " + event.target.value);
         this.setState({ text: event.target.value });
+        if (event.target.value.trim() !== "") {
+            document.getElementById("asdasdasdada").style.display = 'none';
+        } else {
+            document.getElementById("asdasdasdada").style.display = '';
+        }
     }
 
     handleColorChange = (event) => {
@@ -95,7 +100,7 @@ class CreateLogoScreen extends Component {
     handleSubmit = (event) => {
         if (this.state.text.trim() === "") {
             event.preventDefault();
-            alert("Text cannot be all whitespace");
+            document.getElementById("asdasdasdada").style.display = '';
         }
     }
 
@@ -135,6 +140,7 @@ class CreateLogoScreen extends Component {
                                         <input type="text" required className="form-control" name="text" defaultValue={this.state.text} ref={node => {
                                             text = node;
                                         }} placeholder="Text" onChange={this.handleTextChange}/>
+                                        <label id="asdasdasdada" style={{display : 'none' }} htmlFor="text">Text must not be all whitespace</label>
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="color">Color:</label>

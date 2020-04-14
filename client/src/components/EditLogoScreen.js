@@ -79,6 +79,12 @@ class EditLogoScreen extends Component {
     handleTextChange = (event) => {
         console.log("handleTextChange to " + event.target.value);
         this.setState({text: event.target.value});
+        if (event.target.value.trim() !== "") {
+            console.log(this.state.text.trim());
+            document.getElementById("editLogoScreenWhitespace").style.display = 'none';
+        } else {
+            document.getElementById("editLogoScreenWhitespace").style.display = '';
+        }
     }
 
     handleColorChange = (event) => {
@@ -124,7 +130,7 @@ class EditLogoScreen extends Component {
     handleSubmit = (event) => {
         if (this.state.text.trim() === "") {
             event.preventDefault();
-            alert("Text cannot be all whitespace");
+            document.getElementById("editLogoScreenWhitespace").style.display = '';
         }
     }
 
@@ -185,6 +191,7 @@ class EditLogoScreen extends Component {
                                                         text = node;
                                                     }} placeholder="Text" defaultValue={data.logo.text} 
                                                     onChange={this.handleTextChange}/>
+                                                    <label id="editLogoScreenWhitespace" style={{display : 'none' }} htmlFor="text">Text must not be all whitespace</label>
                                                 </div>
                                                 <div className="form-group">
                                                     <label htmlFor="color">Color:</label>
