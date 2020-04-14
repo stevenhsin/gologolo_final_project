@@ -161,7 +161,7 @@ class EditLogoScreen extends Component {
                                             <h4><a className="btn btn-primary" href="/" role="button">goLogolo Home</a></h4>
                                             <h3 className="panel-title">
                                                 Edit Logo
-                                        </h3>
+                                            </h3>
                                         </div>
                                         <div className="panel-body">                                            
                                             <form onSubmit={e => {
