@@ -8,7 +8,7 @@ const GET_LOGOS = gql`
   {
     logos {
       _id
-      text
+      title
       lastUpdate
     }
   }
@@ -33,7 +33,7 @@ class HomeScreen extends Component {
                                         {data.logos.sort((a, b) => b.lastUpdate > a.lastUpdate).map((logo, index) => (
                                             <div key={index} className='home_logo_link'
                                             style={{ whiteSpace: "pre-wrap" }}>
-                                        <Link to={`/view/${logo._id}`}>{logo.text}</Link>
+                                        <Link to={`/view/${logo._id}`}>{logo.title}</Link>
                                     </div>
                                 ))}
                                     </div>

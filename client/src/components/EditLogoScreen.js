@@ -7,15 +7,17 @@ const GET_LOGO = gql`
     query logo($logoId: String) {
         logo(id: $logoId) {
             _id
-            text
-            color
-            fontSize
+            title
+            texts
+            images
             backgroundColor
             borderColor
             borderRadius
             borderWidth
             padding
             margin
+            height
+            width
             lastUpdate
         }
     }
@@ -24,26 +26,28 @@ const GET_LOGO = gql`
 const UPDATE_LOGO = gql`
     mutation updateLogo(
         $id: String!,
-        $text: String!,
-        $color: String!,
-        $fontSize: Int!,
+        $texts: [textTypeInput]!,
+        $images: [imageTypeInput]!,
         $backgroundColor: String!,
         $borderColor: String!,
         $borderRadius: Int!,
         $borderWidth: Int!,
         $padding: Int!,
-        $margin: Int!) {
+        $margin: Int!,
+        $height: Int!,
+        $width: Int!) {
             updateLogo(
                 id: $id,
-                text: $text,
-                color: $color,
-                fontSize: $fontSize,
+                texts: $texts,
+                images: $images,
                 backgroundColor: $backgroundColor,
                 borderColor: $borderColor,
                 borderRadius: $borderRadius,
                 borderWidth: $borderWidth,
                 padding: $padding,
-                margin: $margin) {
+                margin: $margin,
+                height: $height,
+                width: $width) {
                     lastUpdate
                 }
         }
@@ -57,6 +61,7 @@ class EditLogoScreen extends Component {
         // WE'LL MANAGE THE UI CONTROL
         // VALUES HERE
         this.state = {
+            focus: null,
             text : "",
             textColor : "",
             fontSize : "",
@@ -72,8 +77,6 @@ class EditLogoScreen extends Component {
 
             flag : true
         };
-
-        //this.handleChange = this.handleChange.bind(this);
     }
 
     handleTextChange = (event) => {
