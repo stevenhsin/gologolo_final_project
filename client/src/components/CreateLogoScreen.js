@@ -68,13 +68,8 @@ class CreateLogoScreen extends Component {
         });
     }
 
-    onDragStart = (event) => {
+    onTextDrag = (event, data) => {
         event.stopPropagation();
-    }
-
-    onTextDragStop = (event, data) => {
-        event.stopPropagation();
-        event.preventDefault();
         let texts = this.state.texts;
         texts.forEach(text => {
             if (text === this.state.focus) {
@@ -84,6 +79,20 @@ class CreateLogoScreen extends Component {
         });
         this.setState({
             texts: texts
+        });
+    }
+
+    onImageDrag = (event, data) => {
+        event.stopPropagation();
+        let images = this.state.images;
+        images.forEach(image => {
+            if (image === this.state.focus) {
+                image.top = parseInt(data.y);
+                image.left = parseInt(data.x);
+            }
+        });
+        this.setState({
+            images: images
         });
     }
 
@@ -193,12 +202,25 @@ class CreateLogoScreen extends Component {
 
     handleAddText = () => {
         console.log("Adding New Text");
+        console.log(this.state.images);
+        console.log(this.state.texts);
         let texts = this.state.texts;
         let newText = {text: "Sample Text", color: "#FFFFFF", fontSize: 20, left: 0, top: 0};
         texts.push(newText);
         this.setState({
             texts: texts,
             focus: newText
+        });
+    }
+
+    handleAddImage = () => {
+        console.log("Adding New Image from " + document.getElementById("image-url").value);
+        let images = this.state.images;
+        let newImage = {url: document.getElementById("image-url").value, width: 100, height: 100, left: 0, top: 0};
+        images.push(newImage);
+        this.setState({
+            images: images,
+            focus: newImage
         });
     }
 
@@ -295,8 +317,16 @@ class CreateLogoScreen extends Component {
                                     </div>
                                 </form>
                                 <div style={{ paddingTop: '10px' }}>
+
+                                    <input id="image-url" type="url" className="form-control" name="url"
+                                    placeholder="Image URL"/>
+                                    <button onClick={this.handleAddImage} className="clickable" style={{
+                                        border: '1px blue', borderRadius: '5px', width: '50%',
+                                        height: '30px', backgroundColor: 'lightblue'
+                                    }}>Add Image</button>
+                                    <br></br>
                                     <button onClick={this.handleAddText} className="clickable" style={{
-                                        border: '2px blue', borderRadius: '5px', width: '50%',
+                                        border: '1px blue', borderRadius: '5px', width: '50%',
                                         height: '30px', backgroundColor: 'lightblue'
                                     }}>Add Text</button>
                                 </div>
@@ -304,20 +334,25 @@ class CreateLogoScreen extends Component {
                                     <div className="panel">
                                         <h3 className="panel-title">Editor</h3>
 
-                                        <label htmlFor="text">Text:</label>
-                                        <input type="text" required className="form-control" name="text" value={focus.text}
-                                        placeholder="Text" onChange={this.handleTextChange}/>
-                                        <label id="text-warning" style={{display : 'none' }} htmlFor="text">Text must not be all whitespace</label>
+                                        {focus.text !== undefined ? 
+                                        <div>
+                                            <label htmlFor="text">Text:</label>
+                                            <input type="text" required className="form-control" name="text" value={focus.text}
+                                            placeholder="Text" onChange={this.handleTextChange}/>
+                                            <label id="text-warning" style={{display : 'none' }} htmlFor="text">Text must not be all whitespace</label>
                                         
-                                        <label htmlFor="textColor">Text Color:</label>
-                                        <input type="color" className="form-control" name="color" value={focus.color} 
-                                        placeholder="Text Color" onChange={this.handleTextColorChange}/>
+                                            <label htmlFor="textColor">Text Color:</label>
+                                            <input type="color" className="form-control" name="color" value={focus.color} 
+                                            placeholder="Text Color" onChange={this.handleTextColorChange}/>
 
-                                        <label htmlFor="fontSize">Font Size:</label>
-                                        <input type="number" min="2" max="144" className="form-control" name="fontSize" value={focus.fontSize}
-                                        placeholder="Font Size" onChange={this.handleFontSizeChange}/>
+                                            <label htmlFor="fontSize">Font Size:</label>
+                                            <input type="number" min="2" max="144" className="form-control" name="fontSize" value={focus.fontSize}
+                                            placeholder="Font Size" onChange={this.handleFontSizeChange}/>
+                                        </div>
+                                        : <div></div>
+                                        }
 
-                                    <label htmlFor="fontSize">Position: {focus.left}, {focus.top}</label>
+                                    <label htmlFor="position">Position: {focus.left}, {focus.top}</label>
                                     </div>
                                 </div> :
                                 <div></div>}
@@ -353,7 +388,7 @@ class CreateLogoScreen extends Component {
                     {this.state.texts.map(text => 
                         <Rnd key={i++} bounds='parent' enableResizing="false"
                         default={{ x: text.left, y: text.top }}
-                        onDragStop={this.onTextDragStop} onDragStart={this.onDragStart}>
+                        onDrag={this.onTextDrag} onDragStart={(e) => {e.stopPropagation()}}>
                             <div key={i++} onMouseDown={(e) => { this.handleChangeFocus(e, text) }} className="moveable" style={{
                                 color: text.color,
                                 fontSize: text.fontSize + "pt",
@@ -361,6 +396,17 @@ class CreateLogoScreen extends Component {
                             }}>
                                 {text.text}
                             </div>
+                        </Rnd>)}
+                    {this.state.images.map(image =>
+                        <Rnd key={i++} bounds='parent'
+                        default={{x: image.left, y: image.top, height: image.height, width: image.width}}
+                        onDragStop={this.onImageDrag} onDragStart={(e) => {e.stopPropagation(); e.preventDefault()}}
+                        onResize={this.onResize}>
+                            <img src={image.url}
+                            width={image.width} height={image.height}
+                            onMouseDown={(e) => { this.handleChangeFocus(e, image) }}
+                            className="moveable"
+                            alt='Missing'/>
                         </Rnd>)}
                     </div>
             </div>
