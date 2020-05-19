@@ -3,13 +3,15 @@ import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
 import { Link } from 'react-router-dom';
 import { parse } from 'graphql';
-import Draggable from 'react-draggable';
+import Draggable, { DraggableCore } from "react-draggable";
+import { Rnd } from 'react-rnd';
+import CreateLogoTextImageSidebar from './CreateLogoTextImageSidebar';
 
 const ADD_LOGO = gql`
     mutation AddLogo(
         $title: String!,
-        $texts: [textTypeInput]!,
-        $images: [imageTypeInput]!,
+        $texts: [textInput]!,
+        $images: [imageInput]!,
         $backgroundColor: String!,
         $borderColor: String!,
         $borderRadius: Int!,
@@ -21,14 +23,15 @@ const ADD_LOGO = gql`
         addLogo(
             title: $title,
             texts: $texts,
-            color: $color,
-            fontSize: $fontSize,
+            images: $images,
             backgroundColor: $backgroundColor,
             borderColor: $borderColor,
             borderRadius: $borderRadius,
             borderWidth: $borderWidth,
             padding: $padding,
-            margin: $margin ){
+            margin: $margin,
+            height: $height,
+            width: $width ){
             _id
         }
     }
@@ -45,26 +48,48 @@ class CreateLogoScreen extends Component {
             borderColor: "#8272b1",
             borderRadius: 30,
             borderWidth: 40,
-            padding: 0,
+            padding: 100,
             margin: 50,
-            height: 1000,
-            width: 1000,
+            height: 500,
+            width: 500,
             focus: null
         };
-        //this.handleChange = this.handleChange.bind(this);
     }
 
-    onStart = () => {
-        this.setState({activeDrags: ++this.state.activeDrags});
-    };
-    
-    onStop = () => {
-        this.setState({activeDrags: --this.state.activeDrags});
-    };
+    handleRemoveFocus = () => {
+        console.log("Removing focus");
+        this.setState({ focus: null});
+    }
 
-    handleTextChange = (event) => {
-        console.log("handleTextChange " + event.target.value);
-        this.setState({ text: event.target.value });
+    handleChangeFocus = (event, component) => {
+        console.log("Changing focus");
+        this.setState({
+            focus: component
+        });
+    }
+
+    onDragStart = (event) => {
+        event.stopPropagation();
+    }
+
+    onTextDragStop = (event, data) => {
+        event.stopPropagation();
+        event.preventDefault();
+        let texts = this.state.texts;
+        texts.forEach(text => {
+            if (text === this.state.focus) {
+                text.top = parseInt(data.y);
+                text.left = parseInt(data.x);
+            }
+        });
+        this.setState({
+            texts: texts
+        });
+    }
+
+    handleTitleChange = (event) => {
+        console.log("handleTitleChange " + event.target.value);
+        this.setState({ title: event.target.value });
         if (event.target.value.trim() !== "") {
             document.getElementById("asdasdasdada").style.display = 'none';
         } else {
@@ -72,14 +97,51 @@ class CreateLogoScreen extends Component {
         }
     }
 
-    handleColorChange = (event) => {
-        console.log("handleColorChange " + event.target.value);
-        this.setState({ color: event.target.value});
+    handleTextChange = (event) => {
+        console.log("handleTextChange " + event.target.value);
+        let texts = this.state.texts;
+        if (event.target.value.trim() !== "") {
+            document.getElementById("text-warning").style.display = 'none';
+        } else {
+            document.getElementById("text-warning").style.display = '';
+        }
+        texts.forEach(text => {
+            if (text === this.state.focus) {
+                text.text = event.target.value;
+            }
+            if (text.text.trim() === "") {
+                text.text = "Text must not be all whitespaces";
+            }
+        });
+        this.setState({
+            texts: texts
+        });
+    }
+
+    handleTextColorChange = (event) => {
+        console.log("handleTextColorChange " + event.target.value);
+        let texts = this.state.texts;
+        texts.forEach(text => {
+            if (text === this.state.focus) {
+                text.color = event.target.value;
+            }
+        });
+        this.setState({
+            texts: texts
+        });
     }
 
     handleFontSizeChange = (event) => {
         console.log("handleFontSizeChange " + event.target.value);
-        this.setState({ fontSize: event.target.value});
+        let texts = this.state.texts;
+        texts.forEach(text => {
+            if (text === this.state.focus) {
+                text.fontSize = event.target.value;
+            }
+        });
+        this.setState({
+            texts: texts
+        });
     }
 
     handleBackgroundColorChange = (event) => {
@@ -112,8 +174,18 @@ class CreateLogoScreen extends Component {
         this.setState({ margin: event.target.value});
     }
 
+    handleHeightChange = (event) => {
+        console.log("handleHeightChange " + event.target.value);
+        this.setState({ height: event.target.value});
+    }
+
+    handleWidthChange = (event) => {
+        console.log("handleHeightChange " + event.target.value);
+        this.setState({ height: event.target.value});
+    }
+
     handleSubmit = (event) => {
-        if (this.state.text.trim() === "") {
+        if (this.state.title.trim() === "") {
             event.preventDefault();
             document.getElementById("asdasdasdada").style.display = '';
         }
@@ -122,7 +194,7 @@ class CreateLogoScreen extends Component {
     handleAddText = () => {
         console.log("Adding New Text");
         let texts = this.state.texts;
-        let newText = {text: "Sample Text", color: "#000000", fontSize: 20, left: 0, top: 0};
+        let newText = {text: "Sample Text", color: "#FFFFFF", fontSize: 20, left: 0, top: 0};
         texts.push(newText);
         this.setState({
             texts: texts,
@@ -131,11 +203,12 @@ class CreateLogoScreen extends Component {
     }
 
     render() {
-        const dragHandlers = {onStart: this.onStart, onStop: this.onStop};
-        let text, color, fontSize, backgroundColor, borderColor, borderRadius, borderWidth, margin, padding;
+        let focus = this.state.focus;
+        let i = 0;
+        let title, backgroundColor, borderColor, borderRadius, borderWidth, margin, padding, height, width;
         return (
             <div className="container row">
-            <div className="col">
+            <div className="col s2" style={{maxWidth: '250pt'}}>
             <Mutation mutation={ADD_LOGO} onCompleted={() => this.props.history.push('/')}>
                 {(addLogo, { loading, error }) => (
                     <div className="container">
@@ -149,37 +222,28 @@ class CreateLogoScreen extends Component {
                             <div className="panel-body">
                                 <form onSubmit={e => {
                                     e.preventDefault();
-                                    addLogo({ variables: { text: text.value, color: color.value, fontSize: parseInt(fontSize.value), backgroundColor: backgroundColor.value,
+                                    addLogo({ variables: { title: title.value, backgroundColor: backgroundColor.value,
                                         borderColor: borderColor.value, borderRadius: parseInt(borderRadius.value), borderWidth: parseInt(borderWidth.value), 
-                                        margin: parseInt(margin.value), padding: parseInt(padding.value) } });
-                                    text.value = "";
-                                    color.value = "";
-                                    fontSize.value = "";
+                                        margin: parseInt(margin.value), padding: parseInt(padding.value), height: parseInt(height.value), width:parseInt(width.value),
+                                        images: this.state.images, texts: this.state.texts } });
+                                    title.value = "";
                                     backgroundColor.value= "";
                                     borderColor.value= "";
                                     borderRadius.value= "";
                                     borderWidth.value= "";
                                     margin.value= "";
                                     padding.value= "";
+                                    height.value="";
+                                    width.value="";
                                 }}>
-                                    {/* <div className="form-group">
-                                        <label htmlFor="text">Text:</label>
-                                        <input type="text" required className="form-control" name="text" defaultValue={this.state.text} ref={node => {
-                                            text = node;
-                                        }} placeholder="Text" onChange={this.handleTextChange}/>
-                                        <label id="asdasdasdada" style={{display : 'none' }} htmlFor="text">Text must not be all whitespace</label>
-                                    </div> */}
                                     <div className="form-group">
-                                        <label htmlFor="color">Color:</label>
-                                        <input type="color" className="form-control" name="color" defaultValue={this.state.color} ref={node => {
-                                            color = node;
-                                        }} placeholder="Color" onChange={this.handleColorChange}/>
-                                    </div>
-                                    <div className="form-group">
-                                        <label htmlFor="fontSize">Font Size:</label>
-                                        <input type="number" min="2" max="144" className="form-control" name="fontSize" defaultValue={this.state.fontSize} ref={node => {
-                                            fontSize = node;
-                                        }} placeholder="Font Size" onChange={this.handleFontSizeChange}/>
+                                    <button type="submit" onClick={this.handleSubmit} className="btn btn-success">Submit</button>
+                                    <br></br>
+                                        <label htmlFor="title">Name:</label>
+                                        <input type="title" required className="form-control" name="title" defaultValue={this.state.title} ref={node => {
+                                            title = node;
+                                        }} placeholder="Name" onChange={this.handleTitleChange}/>
+                                        <label id="asdasdasdada" style={{display : 'none' }} htmlFor="title">Name must not be all whitespace</label>
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="backgroundColor">Background Color:</label>
@@ -217,14 +281,46 @@ class CreateLogoScreen extends Component {
                                             margin = node;
                                         }} placeholder="Margin" onChange={this.handleMarginChange}/>
                                     </div>
-                                    <button type="submit" onClick={this.handleSubmit} className="btn btn-success">Submit</button>
+                                    <div className="form-group">
+                                        <label htmlFor="height">Height:</label>
+                                        <input type="number" min="5" max="10000" className="form-control" name="height" defaultValue={this.state.height} ref={node => {
+                                            height = node;
+                                        }} placeholder="Height" onChange={this.handleHeightChange}/>
+                                    </div>
+                                    <div className="form-group">
+                                        <label htmlFor="width">Width:</label>
+                                        <input type="number" min="5" max="10000" className="form-control" name="width" defaultValue={this.state.width} ref={node => {
+                                            width = node;
+                                        }} placeholder="Width" onChange={this.handleWidthChange}/>
+                                    </div>
                                 </form>
                                 <div style={{ paddingTop: '10px' }}>
                                     <button onClick={this.handleAddText} className="clickable" style={{
-                                        border: '2px solid black', borderRadius: '5px', width: '50%',
+                                        border: '2px blue', borderRadius: '5px', width: '50%',
                                         height: '30px', backgroundColor: 'lightblue'
                                     }}>Add Text</button>
                                 </div>
+                                {focus ? <div className="container" focus={focus}>
+                                    <div className="panel">
+                                        <h3 className="panel-title">Editor</h3>
+
+                                        <label htmlFor="text">Text:</label>
+                                        <input type="text" required className="form-control" name="text" value={focus.text}
+                                        placeholder="Text" onChange={this.handleTextChange}/>
+                                        <label id="text-warning" style={{display : 'none' }} htmlFor="text">Text must not be all whitespace</label>
+                                        
+                                        <label htmlFor="textColor">Text Color:</label>
+                                        <input type="color" className="form-control" name="color" value={focus.color} 
+                                        placeholder="Text Color" onChange={this.handleTextColorChange}/>
+
+                                        <label htmlFor="fontSize">Font Size:</label>
+                                        <input type="number" min="2" max="144" className="form-control" name="fontSize" value={focus.fontSize}
+                                        placeholder="Font Size" onChange={this.handleFontSizeChange}/>
+
+                                    <label htmlFor="fontSize">Position: {focus.left}, {focus.top}</label>
+                                    </div>
+                                </div> :
+                                <div></div>}
                                 {loading && <p>Loading...</p>}
                                 {error && <p>Error :( Please try again</p>}
                             </div>
@@ -233,8 +329,8 @@ class CreateLogoScreen extends Component {
                 )}
             </Mutation>
             </div>
-            <div className="col s8" style={{overflow: 'auto'}}>
-                <div id="mainlogo" style= {{
+            <div style={{overflow: 'auto'}} >
+                <div id="mainlogo" className="col center-align logo-canvas" style= {{
                         color: this.state.color,
                         fontSize: this.state.fontSize + "pt",
         
@@ -247,15 +343,26 @@ class CreateLogoScreen extends Component {
         
                         padding: this.state.padding + "pt",
                         margin: this.state.margin + "pt",
-                        maxWidth: 'min-content',
-                        minWidth: 'min-content',
+
+                        height: this.state.height + "pt",
+                        width: this.state.width + "pt",
                         textAlign: 'center',
                         position: 'absolute',
                         whiteSpace: 'pre-wrap'
-                }}> {this.state.texts.map(text => <Draggable bounds="parent" {...dragHandlers}><div style= {{color: text.color, fontSize: text.fontSize, left: text.left, top: text.top}}>{text.text}</div></Draggable>)} </div>
-            </div>
-            <div className="col">
-                
+                }} onMouseDown={this.handleRemoveFocus}> 
+                    {this.state.texts.map(text => 
+                        <Rnd key={i++} bounds='parent' enableResizing="false"
+                        default={{ x: text.left, y: text.top }}
+                        onDragStop={this.onTextDragStop} onDragStart={this.onDragStart}>
+                            <div key={i++} onMouseDown={(e) => { this.handleChangeFocus(e, text) }} className="moveable" style={{
+                                color: text.color,
+                                fontSize: text.fontSize + "pt",
+                                height: "100%", width: "100%"
+                            }}>
+                                {text.text}
+                            </div>
+                        </Rnd>)}
+                    </div>
             </div>
             </div>
         );
