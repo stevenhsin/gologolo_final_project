@@ -26,8 +26,8 @@ const GET_LOGO = gql`
 const UPDATE_LOGO = gql`
     mutation updateLogo(
         $id: String!,
-        $texts: [textTypeInput]!,
-        $images: [imageTypeInput]!,
+        $texts: [textInput]!,
+        $images: [imageInput]!,
         $backgroundColor: String!,
         $borderColor: String!,
         $borderRadius: Int!,
@@ -148,15 +148,18 @@ class EditLogoScreen extends Component {
                     if (this.state.flag) {
                         this.setState({
                             flag: false,
-                            text: data.logo.text,
-                            color: data.logo.color,
+                            title: data.logo.title,
+                            texts: data.logo.texts,
+                            images: data.logo.images,
                             fontSize: data.logo.fontSize,
                             backgroundColor: data.logo.backgroundColor,
                             borderColor: data.logo.borderColor,
                             borderRadius: data.logo.borderRadius,
                             borderWidth: data.logo.borderWidth,
                             padding: data.logo.padding,
-                            margin: data.logo.margin
+                            margin: data.logo.margin,
+                            height: data.logo.height,
+                            width: data.logo.width
                         });
                     }
                     

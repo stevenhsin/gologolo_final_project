@@ -4,6 +4,8 @@ import '../App.css';
 import gql from 'graphql-tag';
 import { Query, Mutation } from 'react-apollo';
 import { Rnd } from 'react-rnd';
+import * as html2canvas from 'html2canvas';
+import download from 'downloadjs';
 
 const GET_LOGO = gql`
     query logo($logoId: String) {
@@ -35,9 +37,19 @@ const DELETE_LOGO = gql`
 
 class ViewLogoScreen extends Component {
 
+    handleDownloadLogo = () => {
+        html2canvas(document.getElementById("logo-canvas"), {
+            useCORS: true,
+            allowTaint: true
+        }).then(function (canvas) {
+            download(canvas.toDataURL("image/png"), "gologolo.png");
+        });
+    };
+
     render() {
         let i = 0;
         let j = 0;
+        
         return (
             <div className="container row">
             <div className="col">
@@ -87,8 +99,9 @@ class ViewLogoScreen extends Component {
                                                         removeLogo({ variables: { id: data.logo._id } });
                                                     }}>
                                                     <Link to={`/edit/${data.logo._id}`} className="btn btn-success">Edit</Link>&nbsp;
-                                                <button type="submit" className="btn btn-danger">Delete</button>
+                                                <button type="submit" className="btn btn-danger">Delete</button>&nbsp;
                                                 </form>
+                                                <button className="btn btn-primary" onClick={this.handleDownloadLogo}>Download</button>
                                                 {loading && <p>Loading...</p>}
                                                 {error && <p>Error :( Please try again</p>}
                                             </div>
@@ -98,7 +111,7 @@ class ViewLogoScreen extends Component {
                             </div>
                         </div>
                         <div style={{overflow: 'auto', paddingRight: "500pt"}}>
-                        <div style = {{
+                        <div id="logo-canvas" ref='logoPrint' style = {{
                                 color: data.logo.color,
                                 fontSize: data.logo.fontSize + "pt",
 
