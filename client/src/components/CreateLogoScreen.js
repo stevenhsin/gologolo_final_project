@@ -51,39 +51,39 @@ class CreateLogoScreen extends Component {
             margin: 50,
             height: 500,
             width: 500,
-            focus: null
+            selected: null
         };
     }
 
     handleDeleteText = () => {
-        console.log("Deleting the selected text", this.state.focus);
+        console.log("Deleting the selected text", this.state.selected);
         let texts = this.state.texts;
-        texts.splice(texts.indexOf(this.state.focus), 1);
+        texts.splice(texts.indexOf(this.state.selected), 1);
         this.setState({
             texts: texts,
-            focus: null
+            selected: null
         });
     }
 
     handleDeleteImage = () => {
-        console.log("Deleting the selected text", this.state.focus);
+        console.log("Deleting the selected text", this.state.selected);
         let images = this.state.images;
-        images.splice(images.indexOf(this.state.focus), 1);
+        images.splice(images.indexOf(this.state.selected), 1);
         this.setState({
             images: images,
-            focus: null
+            selected: null
         });
     }
 
-    handleRemoveFocus = () => {
-        console.log("Removing focus");
-        this.setState({ focus: null});
+    handleRemoveSelection = () => {
+        console.log("Removing selected", this.state.selected);
+        this.setState({ selected: null});
     }
 
-    handleChangeFocus = (event, component) => {
-        console.log("Changing focus");
+    handleSetSelection = (event, component) => {
+        console.log("Changing selected", component);
         this.setState({
-            focus: component
+            selected: component
         });
     }
 
@@ -92,9 +92,9 @@ class CreateLogoScreen extends Component {
         event.preventDefault();
         let texts = this.state.texts;
         texts.forEach(text => {
-            if (text === this.state.focus) {
-                text.top = parseInt(data.y);
-                text.left = parseInt(data.x);
+            if (text === this.state.selected) {
+                text.y = parseInt(data.y);
+                text.x = parseInt(data.x);
             }
         });
         this.setState({
@@ -107,9 +107,9 @@ class CreateLogoScreen extends Component {
         event.preventDefault();
         let images = this.state.images;
         images.forEach(image => {
-            if (image === this.state.focus) {
-                image.top = parseInt(data.y);
-                image.left = parseInt(data.x);
+            if (image === this.state.selected) {
+                image.y = parseInt(data.y);
+                image.x = parseInt(data.x);
             }
         });
         this.setState({
@@ -121,11 +121,11 @@ class CreateLogoScreen extends Component {
         console.log("Resizing image");
         let images = this.state.images;
         images.forEach(image => {
-            if (image === this.state.focus) {
+            if (image === this.state.selected) {
                 image.height = ref.offsetHeight;
                 image.width = ref.offsetWidth;
-                image.left = parseInt(pos.x);
-                image.top = parseInt(pos.y);
+                image.x = parseInt(pos.x);
+                image.y = parseInt(pos.y);
             }
         });
         this.setState({
@@ -152,7 +152,7 @@ class CreateLogoScreen extends Component {
             document.getElementById("text-warning").style.display = '';
         }
         texts.forEach(text => {
-            if (text === this.state.focus) {
+            if (text === this.state.selected) {
                 text.text = event.target.value;
             }
             if (text.text.trim() === "") {
@@ -168,7 +168,7 @@ class CreateLogoScreen extends Component {
         console.log("handleTextColorChange " + event.target.value);
         let texts = this.state.texts;
         texts.forEach(text => {
-            if (text === this.state.focus) {
+            if (text === this.state.selected) {
                 text.color = event.target.value;
             }
         });
@@ -181,7 +181,7 @@ class CreateLogoScreen extends Component {
         console.log("handleFontSizeChange " + event.target.value);
         let texts = this.state.texts;
         texts.forEach(text => {
-            if (text === this.state.focus) {
+            if (text === this.state.selected) {
                 text.fontSize = event.target.value;
             }
         });
@@ -240,28 +240,29 @@ class CreateLogoScreen extends Component {
     handleAddText = () => {
         console.log("Adding New Text");
         let texts = this.state.texts;
-        let newText = {text: "Sample Text", color: "#FFFFFF", fontSize: 20, left: 0, top: 0};
+        let newText = {text: "Sample Text", color: "#FFFFFF", fontSize: 20, x: -105, y: -105};
         texts.push(newText);
         this.setState({
             texts: texts,
-            focus: newText
+            selected: newText
         });
     }
 
     handleAddImage = () => {
         console.log("Adding New Image from " + document.getElementById("image-url").value);
         let images = this.state.images;
-        let newImage = {url: document.getElementById("image-url").value, width: 100, height: 100, left: 0, top: 0};
+        let newImage = {url: document.getElementById("image-url").value, width: 100, height: 100, x: -105, y: -105};
         images.push(newImage);
         this.setState({
             images: images,
-            focus: newImage
+            selected: newImage
         });
     }
 
     render() {
-        let focus = this.state.focus;
+        let selected = this.state.selected;
         let i = 0;
+        let j = 0;
         let title, backgroundColor, borderColor, borderRadius, borderWidth, margin, padding, height, width;
         return (
             <div className="container row">
@@ -365,23 +366,23 @@ class CreateLogoScreen extends Component {
                                         height: '30px', backgroundColor: 'lightblue'
                                     }}>Add Text</button>
                                 </div>
-                                {focus ? <div className="container" focus={focus}>
+                                {selected ? <div className="container" selected={selected}>
                                     <div className="panel">
                                         <h3 className="panel-title">Editor</h3>
 
-                                        {focus.text !== undefined ? 
+                                        {selected.text !== undefined ? 
                                         <div>
                                             <label htmlFor="text">Text:</label>
-                                            <input type="text" required className="form-control" name="text" value={focus.text}
+                                            <input type="text" required className="form-control" name="text" value={selected.text}
                                             placeholder="Text" onChange={this.handleTextChange}/>
                                             <label id="text-warning" style={{display : 'none' }} htmlFor="text">Text must not be all whitespace</label>
                                         
                                             <label htmlFor="textColor">Text Color:</label>
-                                            <input type="color" className="form-control" name="color" value={focus.color} 
+                                            <input type="color" className="form-control" name="color" value={selected.color} 
                                             placeholder="Text Color" onChange={this.handleTextColorChange}/>
 
                                             <label htmlFor="fontSize">Font Size:</label>
-                                            <input type="number" min="2" max="144" className="form-control" name="fontSize" value={focus.fontSize}
+                                            <input type="number" min="2" max="144" className="form-control" name="fontSize" value={selected.fontSize}
                                             placeholder="Font Size" onChange={this.handleFontSizeChange}/>
 
                                             <button onClick={this.handleDeleteText} className="clickable" style={{
@@ -395,7 +396,7 @@ class CreateLogoScreen extends Component {
                                             }}>Delete</button></div>
                                         }
 
-                                    <label htmlFor="position">Position: {focus.left}, {focus.top}</label>
+                                    <label htmlFor="position">Position: {selected.x}, {selected.y}</label>
                                     </div>
                                 </div> :
                                 <div></div>}
@@ -409,9 +410,6 @@ class CreateLogoScreen extends Component {
             </div>
             <div style={{overflow: 'auto'}} >
                 <div id="mainlogo" className="logo-canvas" style= {{
-                        color: this.state.color,
-                        fontSize: this.state.fontSize + "pt",
-        
                         backgroundColor: this.state.backgroundColor,
         
                         borderStyle: 'solid',
@@ -426,28 +424,29 @@ class CreateLogoScreen extends Component {
                         width: this.state.width + "pt",
                         position: 'absolute',
                         whiteSpace: 'pre-wrap'
-                }} onMouseDown={this.handleRemoveFocus}> 
+                }} onMouseDown={this.handleRemoveSelection}> 
                     {this.state.texts.map(text => 
                         <Rnd key={i++} bounds='.logo-canvas' enableResizing="false"
-                        default={{ x: text.left, y: text.top }}
+                        //default={{ x: text.x, y: text.y }}
                         onDrag={this.onTextDrag} onDragStart={(e) => {e.stopPropagation()}}>
-                            <div key={i++} onMouseDown={(e) => { this.handleChangeFocus(e, text) }} className="moveable" style={{
+                            <div key={i++} onMouseDown={(e) => { this.handleSetSelection(e, text) }} className="moveable" style={{
                                 color: text.color,
                                 fontSize: text.fontSize + "pt",
-                                height: "100%", width: "100%"
+                                height: "100%", width: "100%",
+                                x: text.x, y: text.y
                             }}>
                                 {text.text}
                             </div>
                         </Rnd>)}
                     {this.state.images.map(image =>
-                        <Rnd key={i++} bounds='.logo-canvas'
-                        default={{x: image.left, y: image.top, height: image.height, width: image.width}}
+                        <Rnd key={j++} bounds='.logo-canvas'
+                        //default={{x: image.x, y: image.y, height: image.height, width: image.width}}
                         onDrag={this.onImageDrag} onDragStart={(e) => {e.stopPropagation(); e.preventDefault()}}
                         onResize={this.onResize}>
                             <img src={image.url}
-                            width={image.width} height={image.height}
-                            onMouseDown={(e) => { this.handleChangeFocus(e, image) }}
-                            className="moveable"
+                            width={image.width + "pt"} height={image.height + "pt"}
+                            onMouseDown={(e) => { this.handleSetSelection(e, image) }}
+                            className="moveable" 
                             alt='Missing'/>
                         </Rnd>)}
                     </div>

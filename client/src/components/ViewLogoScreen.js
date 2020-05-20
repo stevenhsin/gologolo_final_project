@@ -10,8 +10,8 @@ const GET_LOGO = gql`
         logo(id: $logoId) {
             _id
             title
-            texts {text, color, fontSize, left, top}
-            images {url, width, height, left, top}
+            texts {text, color, fontSize, x, y}
+            images {url, width, height, x, y}
             backgroundColor
             borderColor
             borderRadius
@@ -37,6 +37,7 @@ class ViewLogoScreen extends Component {
 
     render() {
         let i = 0;
+        let j = 0;
         return (
             <div className="container row">
             <div className="col">
@@ -116,20 +117,22 @@ class ViewLogoScreen extends Component {
                                 whiteSpace: 'pre-wrap'
                         }}> {data.logo.texts.map(text => 
                             <Rnd key={i++} bounds='.logo-canvas' enableResizing="false"
-                            default={{ x: text.left, y: text.top }}>
+                            default={{ x: text.x + 105, y: text.y + 105}}
+                            >
                                 <div key={i++} className="moveable" style={{
                                     color: text.color,
                                     fontSize: text.fontSize + "pt",
-                                    height: "100%", width: "100%",
+                                    height: "100%", width: "100%"
                                 }}>
                                     {text.text}
                                 </div>
                             </Rnd>)}
                             {data.logo.images.map(image =>
-                            <Rnd key={i++} bounds='.logo-canvas'
-                                default={{x: image.left, y: image.top, height: image.height, width: image.width}}>
+                            <Rnd key={j++} bounds='.logo-canvas'
+                                default={{x: image.x, y: image.y, height: image.height, width: image.width}}
+                                >
                                 <img src={image.url}
-                                width={image.width} height={image.height}
+                                width={image.width + "pt"} height={image.height + "pt"}
                                 className="moveable"
                                 alt='Missing'/>
                             </Rnd>)} </div>

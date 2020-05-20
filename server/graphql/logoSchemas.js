@@ -26,10 +26,10 @@ var textType = new GraphQLObjectType({
             fontSize: {
                 type: GraphQLInt
             },
-            left: {
+            x: {
                 type: GraphQLInt
             },
-            top: {
+            y: {
                 type: GraphQLInt
             }
         }
@@ -49,10 +49,10 @@ var textTypeInput = new GraphQLInputObjectType({
             fontSize: {
                 type: GraphQLInt
             },
-            left: {
+            x: {
                 type: GraphQLInt
             },
-            top: {
+            y: {
                 type: GraphQLInt
             }
         }
@@ -72,10 +72,10 @@ var imageType = new GraphQLObjectType({
             height: {
                 type: GraphQLInt
             },
-            left: {
+            x: {
                 type: GraphQLInt
             },
-            top: {
+            y: {
                 type: GraphQLInt
             }
         }
@@ -95,10 +95,10 @@ var imageTypeInput = new GraphQLInputObjectType({
             height: {
                 type: GraphQLInt
             },
-            left: {
+            x: {
                 type: GraphQLInt
             },
-            top: {
+            y: {
                 type: GraphQLInt
             }
         }
