@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import { parse } from 'graphql';
 import Draggable, { DraggableCore } from "react-draggable";
 import { Rnd } from 'react-rnd';
-import CreateLogoTextImageSidebar from './CreateLogoTextImageSidebar';
 
 const ADD_LOGO = gql`
     mutation AddLogo(
@@ -56,6 +55,26 @@ class CreateLogoScreen extends Component {
         };
     }
 
+    handleDeleteText = () => {
+        console.log("Deleting the selected text", this.state.focus);
+        let texts = this.state.texts;
+        texts.splice(texts.indexOf(this.state.focus), 1);
+        this.setState({
+            texts: texts,
+            focus: null
+        });
+    }
+
+    handleDeleteImage = () => {
+        console.log("Deleting the selected text", this.state.focus);
+        let images = this.state.images;
+        images.splice(images.indexOf(this.state.focus), 1);
+        this.setState({
+            images: images,
+            focus: null
+        });
+    }
+
     handleRemoveFocus = () => {
         console.log("Removing focus");
         this.setState({ focus: null});
@@ -70,6 +89,7 @@ class CreateLogoScreen extends Component {
 
     onTextDrag = (event, data) => {
         event.stopPropagation();
+        event.preventDefault();
         let texts = this.state.texts;
         texts.forEach(text => {
             if (text === this.state.focus) {
@@ -84,11 +104,28 @@ class CreateLogoScreen extends Component {
 
     onImageDrag = (event, data) => {
         event.stopPropagation();
+        event.preventDefault();
         let images = this.state.images;
         images.forEach(image => {
             if (image === this.state.focus) {
                 image.top = parseInt(data.y);
                 image.left = parseInt(data.x);
+            }
+        });
+        this.setState({
+            images: images
+        });
+    }
+
+    onResize = (event, dir, ref, delta, pos) => {
+        console.log("Resizing image");
+        let images = this.state.images;
+        images.forEach(image => {
+            if (image === this.state.focus) {
+                image.height = ref.offsetHeight;
+                image.width = ref.offsetWidth;
+                image.left = parseInt(pos.x);
+                image.top = parseInt(pos.y);
             }
         });
         this.setState({
@@ -190,7 +227,7 @@ class CreateLogoScreen extends Component {
 
     handleWidthChange = (event) => {
         console.log("handleHeightChange " + event.target.value);
-        this.setState({ height: event.target.value});
+        this.setState({ width: event.target.value});
     }
 
     handleSubmit = (event) => {
@@ -202,8 +239,6 @@ class CreateLogoScreen extends Component {
 
     handleAddText = () => {
         console.log("Adding New Text");
-        console.log(this.state.images);
-        console.log(this.state.texts);
         let texts = this.state.texts;
         let newText = {text: "Sample Text", color: "#FFFFFF", fontSize: 20, left: 0, top: 0};
         texts.push(newText);
@@ -348,8 +383,16 @@ class CreateLogoScreen extends Component {
                                             <label htmlFor="fontSize">Font Size:</label>
                                             <input type="number" min="2" max="144" className="form-control" name="fontSize" value={focus.fontSize}
                                             placeholder="Font Size" onChange={this.handleFontSizeChange}/>
-                                        </div>
-                                        : <div></div>
+
+                                            <button onClick={this.handleDeleteText} className="clickable" style={{
+                                            border: '1px red', borderRadius: '5px', width: '50%',
+                                            height: '30px', backgroundColor: 'red'
+                                            }}>Delete</button>
+                                            </div>
+                                        : <div><button onClick={this.handleDeleteImage} className="clickable" style={{
+                                            border: '1px red', borderRadius: '5px', width: '50%',
+                                            height: '30px', backgroundColor: 'red'
+                                            }}>Delete</button></div>
                                         }
 
                                     <label htmlFor="position">Position: {focus.left}, {focus.top}</label>
@@ -365,7 +408,7 @@ class CreateLogoScreen extends Component {
             </Mutation>
             </div>
             <div style={{overflow: 'auto'}} >
-                <div id="mainlogo" className="col center-align logo-canvas" style= {{
+                <div id="mainlogo" className="logo-canvas" style= {{
                         color: this.state.color,
                         fontSize: this.state.fontSize + "pt",
         
@@ -381,12 +424,11 @@ class CreateLogoScreen extends Component {
 
                         height: this.state.height + "pt",
                         width: this.state.width + "pt",
-                        textAlign: 'center',
                         position: 'absolute',
                         whiteSpace: 'pre-wrap'
                 }} onMouseDown={this.handleRemoveFocus}> 
                     {this.state.texts.map(text => 
-                        <Rnd key={i++} bounds='parent' enableResizing="false"
+                        <Rnd key={i++} bounds='.logo-canvas' enableResizing="false"
                         default={{ x: text.left, y: text.top }}
                         onDrag={this.onTextDrag} onDragStart={(e) => {e.stopPropagation()}}>
                             <div key={i++} onMouseDown={(e) => { this.handleChangeFocus(e, text) }} className="moveable" style={{
@@ -398,9 +440,9 @@ class CreateLogoScreen extends Component {
                             </div>
                         </Rnd>)}
                     {this.state.images.map(image =>
-                        <Rnd key={i++} bounds='parent'
+                        <Rnd key={i++} bounds='.logo-canvas'
                         default={{x: image.left, y: image.top, height: image.height, width: image.width}}
-                        onDragStop={this.onImageDrag} onDragStart={(e) => {e.stopPropagation(); e.preventDefault()}}
+                        onDrag={this.onImageDrag} onDragStart={(e) => {e.stopPropagation(); e.preventDefault()}}
                         onResize={this.onResize}>
                             <img src={image.url}
                             width={image.width} height={image.height}

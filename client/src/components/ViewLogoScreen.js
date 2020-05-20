@@ -3,14 +3,15 @@ import { Link } from 'react-router-dom';
 import '../App.css';
 import gql from 'graphql-tag';
 import { Query, Mutation } from 'react-apollo';
+import { Rnd } from 'react-rnd';
 
 const GET_LOGO = gql`
     query logo($logoId: String) {
         logo(id: $logoId) {
             _id
             title
-            texts
-            images
+            texts {text, color, fontSize, left, top}
+            images {url, width, height, left, top}
             backgroundColor
             borderColor
             borderRadius
@@ -35,6 +36,7 @@ const DELETE_LOGO = gql`
 class ViewLogoScreen extends Component {
 
     render() {
+        let i = 0;
         return (
             <div className="container row">
             <div className="col">
@@ -54,12 +56,8 @@ class ViewLogoScreen extends Component {
                                 </div>
                                 <div className="panel-body">
                                     <dl>
-                                        <dt>Text:</dt>
-                                        <dd>{data.logo.text}</dd>
-                                        <dt>Color:</dt>
-                                        <dd>{data.logo.color}</dd>
-                                        <dt>Font Size:</dt>
-                                        <dd>{data.logo.fontSize}</dd>
+                                        <dt>Name:</dt>
+                                        <dd>{data.logo.title}</dd>
                                         <dt>Backgound Color:</dt>
                                         <dd>{data.logo.backgroundColor}</dd>
                                         <dt>Border Color:</dt>
@@ -72,6 +70,10 @@ class ViewLogoScreen extends Component {
                                         <dd>{data.logo.padding}</dd>
                                         <dt>Margin:</dt>
                                         <dd>{data.logo.margin}</dd>
+                                        <dt>Height:</dt>
+                                        <dd>{data.logo.height}</dd>
+                                        <dt>Width:</dt>
+                                        <dd>{data.logo.width}</dd>
                                         <dt>Last Updated:</dt>
                                         <dd>{data.logo.lastUpdate}</dd>
                                     </dl>
@@ -94,7 +96,7 @@ class ViewLogoScreen extends Component {
                                 </div>
                             </div>
                         </div>
-                        <div className= "col s8" style={{overflow: 'auto'}}>
+                        <div style={{overflow: 'auto', paddingRight: "500pt"}}>
                         <div style = {{
                                 color: data.logo.color,
                                 fontSize: data.logo.fontSize + "pt",
@@ -108,12 +110,29 @@ class ViewLogoScreen extends Component {
 
                                 padding: data.logo.padding + "pt",
                                 margin: data.logo.margin + "pt",
-                                maxWidth: 'min-content',
-                                minWidth: 'min-content',
-                                textAlign: 'center',
+                                height: data.logo.height + "pt",
+                                width: data.logo.width + "pt",
                                 position: 'absolute',
                                 whiteSpace: 'pre-wrap'
-                        }}> {data.logo.text} </div>
+                        }}> {data.logo.texts.map(text => 
+                            <Rnd key={i++} bounds='.logo-canvas' enableResizing="false"
+                            default={{ x: text.left, y: text.top }}>
+                                <div key={i++} className="moveable" style={{
+                                    color: text.color,
+                                    fontSize: text.fontSize + "pt",
+                                    height: "100%", width: "100%",
+                                }}>
+                                    {text.text}
+                                </div>
+                            </Rnd>)}
+                            {data.logo.images.map(image =>
+                            <Rnd key={i++} bounds='.logo-canvas'
+                                default={{x: image.left, y: image.top, height: image.height, width: image.width}}>
+                                <img src={image.url}
+                                width={image.width} height={image.height}
+                                className="moveable"
+                                alt='Missing'/>
+                            </Rnd>)} </div>
                         </div>
                         </div>
                     );
