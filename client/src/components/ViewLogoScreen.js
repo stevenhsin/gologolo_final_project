@@ -43,6 +43,7 @@ class ViewLogoScreen extends Component {
             allowTaint: true
         }).then(function (canvas) {
             download(canvas.toDataURL("image/png"), "gologolo.png");
+            window.open(canvas.toDataURL("image/png"), "_blank");
         });
     };
 
