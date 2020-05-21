@@ -113,9 +113,6 @@ class ViewLogoScreen extends Component {
                         </div>
                         <div style={{overflow: 'auto', paddingRight: "500pt"}}>
                         <div id="logo-canvas" ref='logoPrint' style = {{
-                                color: data.logo.color,
-                                fontSize: data.logo.fontSize + "pt",
-
                                 backgroundColor: data.logo.backgroundColor,
 
                                 borderStyle: 'solid',
